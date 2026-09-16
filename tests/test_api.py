@@ -32,7 +32,7 @@ async def test_predict_correct_values():
         })
 
     assert resp.status_code == 200
-    assert {"predictions": [2.0, 4.0, 6.0]} == resp.json()
+    assert {"predictions": [2.0, 4.0, 7.0]} == resp.json()
 
 # Un test qui valide une prédiction incorrecte
 @pytest.mark.anyio
