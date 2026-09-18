@@ -10,7 +10,26 @@ permissions:
   contents: read
 
 jobs:
+  security:
+    runs-on: ubuntu-24.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install safety
+        run: pip install safety==1.10.3
+
+      - name: Check security
+        run: safety check || true
+
   test:
+    needs: security
     runs-on: ubuntu-24.04
     steps:
       # Récupérer le code
@@ -31,4 +50,4 @@ jobs:
       - name: Run tests
         run: |
           export PYTHONPATH=$(pwd)
-          pytest --maxfail=1 --disable-warnings -q
+          pytest --maxfail=1 --disable-warnings -q --cov=app --cov-report=xml --cov-report=term-missing
